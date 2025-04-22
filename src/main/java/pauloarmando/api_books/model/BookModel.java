@@ -17,7 +17,7 @@ public class BookModel {
     private Long id;
     private String title;
     private String author;
-    private Integer release;
+    private String release;
     private String isbn;
     private String gender;
     private String publisher;

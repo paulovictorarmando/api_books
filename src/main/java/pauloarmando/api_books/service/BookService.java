@@ -10,6 +10,7 @@ import pauloarmando.api_books.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -17,15 +18,26 @@ public class BookService {
     private BookRepository bookRepository;
 
     /*
-        ./api/books/create      -       create
-        ./api/books/delete      -       delete
-        ./api/books/update      -       update
-        ./api/books             -       home
+        /api/books/delete      -       delete
+        /api/books/update      -       update
+        /api/books/search      -       search
+        /api/books             -       home
     */
-    public List<BookModel> home()
-    {
-        return bookRepository.findAll();
+    public List<BookDTO> home() {
+        return bookRepository.findAll()
+                .stream()
+                .map(book -> new BookDTO(
+                        book.getTitle(),
+                        book.getAuthor(),
+                        book.getIsbn(),
+                        book.getRelease(),
+                        book.getGender(),
+                        book.getPublisher(),
+                        book.getEdition()
+                ))
+                .collect(Collectors.toList());
     }
+
     public BookDTO create(BookDTO bookDTO) {
         Optional<BookModel> bookCopy = bookRepository.findByIsbn(bookDTO.isbn());
         if (bookCopy.isPresent())
@@ -41,6 +53,7 @@ public class BookService {
         bookRepository.save(newBookModel );
         return bookDTO;
     }
+
     public BookDTO update(BookDTO bookDTO) {
         Optional<BookModel> bookCopy = bookRepository.findByIsbn(bookDTO.isbn());
         if(bookCopy.isPresent()) {
@@ -57,15 +70,41 @@ public class BookService {
         }
         throw new ApiBooksExceptions("Book does not exists");
     }
-    public void delete(Long id)
+
+    public BookDTO search(String isbn)
     {
-        Optional<BookModel> bookCopy = bookRepository.findById(id);
+        Optional<BookModel> bookCopy = bookRepository.findByIsbn(isbn);
         if(bookCopy.isPresent()) {
-            bookRepository.delete(bookCopy.get());
-            return;
+            return(new BookDTO(
+                    bookCopy.get().getTitle(),
+                    bookCopy.get().getAuthor(),
+                    bookCopy.get().getRelease(),
+                    bookCopy.get().getIsbn(),
+                    bookCopy.get().getGender(),
+                    bookCopy.get().getPublisher(),
+                    bookCopy.get().getEdition()
+            ));
         }
         throw new ApiBooksExceptions("Book does not exists");
     }
+
+    public BookDTO search(Long id)
+    {
+        Optional<BookModel> bookCopy = bookRepository.findById(id);
+        if(bookCopy.isPresent()) {
+            return(new BookDTO(
+                    bookCopy.get().getTitle(),
+                    bookCopy.get().getAuthor(),
+                    bookCopy.get().getRelease(),
+                    bookCopy.get().getIsbn(),
+                    bookCopy.get().getGender(),
+                    bookCopy.get().getPublisher(),
+                    bookCopy.get().getEdition()
+            ));
+        }
+        throw new ApiBooksExceptions("Book does not exists");
+    }
+
     public void delete(String isbn)
     {
         Optional<BookModel> bookCopy = bookRepository.findByIsbn(isbn);
