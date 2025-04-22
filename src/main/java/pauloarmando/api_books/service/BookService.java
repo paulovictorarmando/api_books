@@ -42,9 +42,9 @@ public class BookService {
         return bookDTO;
     }
     public BookDTO update(BookDTO bookDTO) {
-        Optional<BookModel> bookcopy = bookRepository.findByIsbn(bookDTO.isbn());
-        if(bookcopy.isPresent()) {
-            BookModel newBookModel = new BookModel();
+        Optional<BookModel> bookCopy = bookRepository.findByIsbn(bookDTO.isbn());
+        if(bookCopy.isPresent()) {
+            BookModel newBookModel = bookCopy.get();
             newBookModel.setTitle(bookDTO.title());
             newBookModel.setAuthor(bookDTO.author());
             newBookModel.setIsbn(bookDTO.isbn());
