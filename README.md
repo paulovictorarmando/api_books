@@ -14,10 +14,11 @@ A book management is API to manage our books, it’s will has a crud included an
 
 ### Endpoints:
 
-- ./api/books/create
-- ./api/books/delete
-- ./api/books/update
-- ./api/books
+- /api/books/create	 -	@PostMapping
+- /api/books/delete	 -	@DeleteMapping
+- /api/books/update	 -	@PutMapping
+- /api/books/search      -      @GetMapping
+- /api/books		 -	@GetMapping
 
 ### Stacks:
 
