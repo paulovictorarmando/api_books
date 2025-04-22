@@ -1,4 +1,4 @@
-package pauloarmando.api_books.models;
+package pauloarmando.api_books.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +9,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class BookModel {
@@ -19,7 +18,7 @@ public class BookModel {
     private String title;
     private String author;
     private Integer release;
-    private Integer isbn;
+    private String isbn;
     private String gender;
     private String publisher;
     private String edition;
