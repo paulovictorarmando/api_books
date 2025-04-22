@@ -29,8 +29,8 @@ public class BookService {
                 .map(book -> new BookDTO(
                         book.getTitle(),
                         book.getAuthor(),
-                        book.getIsbn(),
                         book.getRelease(),
+                        book.getId(),
                         book.getGender(),
                         book.getPublisher(),
                         book.getEdition()
@@ -39,13 +39,13 @@ public class BookService {
     }
 
     public BookDTO create(BookDTO bookDTO) {
-        Optional<BookModel> bookCopy = bookRepository.findByIsbn(bookDTO.isbn());
+        Optional<BookModel> bookCopy = bookRepository.findById(bookDTO.isbn());
         if (bookCopy.isPresent())
             throw new ApiBooksExceptions("Book already exists");
         BookModel newBookModel = new BookModel();
         newBookModel.setTitle(bookDTO.title());
         newBookModel .setAuthor(bookDTO.author());
-        newBookModel .setIsbn(bookDTO.isbn());
+        newBookModel .setId(bookDTO.isbn());
         newBookModel .setRelease(bookDTO.release());
         newBookModel .setGender(bookDTO.gender());
         newBookModel .setPublisher(bookDTO.publisher());
@@ -55,12 +55,12 @@ public class BookService {
     }
 
     public BookDTO update(BookDTO bookDTO) {
-        Optional<BookModel> bookCopy = bookRepository.findByIsbn(bookDTO.isbn());
+        Optional<BookModel> bookCopy = bookRepository.findById(bookDTO.isbn());
         if(bookCopy.isPresent()) {
             BookModel newBookModel = bookCopy.get();
             newBookModel.setTitle(bookDTO.title());
             newBookModel.setAuthor(bookDTO.author());
-            newBookModel.setIsbn(bookDTO.isbn());
+            newBookModel .setId(bookDTO.isbn());
             newBookModel.setRelease(bookDTO.release());
             newBookModel.setGender(bookDTO.gender());
             newBookModel.setPublisher(bookDTO.publisher());
@@ -71,24 +71,7 @@ public class BookService {
         throw new ApiBooksExceptions("Book does not exists");
     }
 
-    public BookDTO search(String isbn)
-    {
-        Optional<BookModel> bookCopy = bookRepository.findByIsbn(isbn);
-        if(bookCopy.isPresent()) {
-            return(new BookDTO(
-                    bookCopy.get().getTitle(),
-                    bookCopy.get().getAuthor(),
-                    bookCopy.get().getRelease(),
-                    bookCopy.get().getIsbn(),
-                    bookCopy.get().getGender(),
-                    bookCopy.get().getPublisher(),
-                    bookCopy.get().getEdition()
-            ));
-        }
-        throw new ApiBooksExceptions("Book does not exists");
-    }
-
-    public BookDTO search(Long id)
+    public BookDTO search(String id)
     {
         Optional<BookModel> bookCopy = bookRepository.findById(id);
         if(bookCopy.isPresent()) {
@@ -96,7 +79,7 @@ public class BookService {
                     bookCopy.get().getTitle(),
                     bookCopy.get().getAuthor(),
                     bookCopy.get().getRelease(),
-                    bookCopy.get().getIsbn(),
+                    bookCopy.get().getId(),
                     bookCopy.get().getGender(),
                     bookCopy.get().getPublisher(),
                     bookCopy.get().getEdition()
@@ -105,9 +88,9 @@ public class BookService {
         throw new ApiBooksExceptions("Book does not exists");
     }
 
-    public void delete(String isbn)
+    public void delete(String id)
     {
-        Optional<BookModel> bookCopy = bookRepository.findByIsbn(isbn);
+        Optional<BookModel> bookCopy = bookRepository.findById(id);
         if(bookCopy.isPresent()) {
             bookRepository.delete(bookCopy.get());
             return;

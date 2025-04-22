@@ -1,9 +1,6 @@
 package pauloarmando.api_books.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -13,12 +10,12 @@ import lombok.*;
 @ToString
 public class BookModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)  // Garanta que está buscando pelo campo ISBN
+    private String id;
     private String title;
     private String author;
     private String release;
-    private String isbn;
     private String gender;
     private String publisher;
     private String edition;

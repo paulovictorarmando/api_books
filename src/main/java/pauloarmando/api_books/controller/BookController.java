@@ -38,22 +38,22 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/api/books/delete")
-    public ResponseEntity<?> delete(@RequestBody String isbn)
+    @DeleteMapping("/api/books/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") String id)
     {
         try{
-            bookService.delete(isbn);
+            bookService.delete(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (ApiBooksExceptions e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
-    @GetMapping("/api/books/search")
-    public ResponseEntity<?> search(@RequestBody String isbn){
+    @GetMapping("/api/books/search/{id}")
+    public ResponseEntity<?> search(@PathVariable("id") String id){
         try{
-            bookService.search(isbn);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            bookService.search(id);
+            return ResponseEntity.ok(bookService.search(id));
         } catch (ApiBooksExceptions e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
